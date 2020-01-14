@@ -1,0 +1,886 @@
+---
+# Container descriptor
+- descriptor: "pip-services:context-info:default:default:1.0"
+  name: "iqs-facade-public"
+  description: "iQuipsys Positron facade organizations"
+
+# - descriptor: "pip-services:shutdown:default:default:1.0"
+#   mode: exception
+#   min_timeout: 20000
+#   max_timeout: 30000 
+
+# Container info
+- descriptor: "pip-services:container-info:default:default:*"
+  name: "iqs-{{{VERSION}}}"
+  description: "Client facade for iQuipsys Positron ({{{VERSION}}})"
+
+# Console logger
+- descriptor: "pip-services:logger:console:default:*"
+  level: trace
+
+# Performance counters that posts values to log
+- descriptor: "pip-services:counters:log:default:1.0"
+  level: "trace"
+
+# AWS logging component
+- descriptor: "pip-services:logger:cloudwatch:default:1.0"
+  level: "info"
+  group: "{{ENV_NAME}}"
+  connection:
+    region: "{{{AWS_REGION}}}"
+  credential:
+    access_id: "{{{AWS_ACCESS_ID}}}"
+    access_key: "{{{AWS_ACCESS_KEY}}}"
+
+# AWS metrics component
+- descriptor: "pip-services:counters:cloudwatch:default:1.0"
+  level: "info"
+  connection:
+    region: "{{{AWS_REGION}}}"
+  credential:
+    access_id: "{{{AWS_ACCESS_ID}}}"
+    access_key: "{{{AWS_ACCESS_KEY}}}"
+
+# Discovery service
+- descriptor: "pip-services:discovery:memory:default:*"
+  mongodb: "uri={{{MONGO_SERVICE_URI}}};host={{{MONGO_SERVICE_HOST}}};port={{{MONGO_SERVICE_PORT}}};database={{{MONGO_DB}}}"
+
+# Credential store
+- descriptor: "pip-services:credential-store:memory:default:*"
+  mongodb: "username={{{MONGO_USER}}};password={{{MONGO_PASS}}}"
+
+############## Infrastructure components ##############
+
+# Event Log components
+- descriptor: "pip-services-eventlog:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_INFRASTRUCTURE_SERVICE_HOST}}}"
+    port: {{PIP_INFRASTRUCTURE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Statistics components
+- descriptor: "pip-services-statistics:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+- descriptor: "iqs-services-statistics:client:http-proxy:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+
+# Settings components
+- descriptor: "pip-services-settings:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_INFRASTRUCTURE_SERVICE_HOST}}}"
+    port: {{PIP_INFRASTRUCTURE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Facets components
+- descriptor: "pip-services-facets:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_INFRASTRUCTURE_SERVICE_HOST}}}"
+    port: {{PIP_INFRASTRUCTURE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Email components
+- descriptor: "pip-services-email:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_INFRASTRUCTURE_SERVICE_HOST}}}"
+    port: {{PIP_INFRASTRUCTURE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Sms components
+- descriptor: "pip-services-sms:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_INFRASTRUCTURE_SERVICE_HOST}}}"
+    port: {{PIP_INFRASTRUCTURE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+############# User management components ##############
+
+# Activities components
+- descriptor: "pip-services-activities:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Accounts components
+- descriptor: "pip-services-accounts:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Email settings components
+- descriptor: "pip-services-emailsettings:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Sms settings components
+- descriptor: "pip-services-smssettings:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Message distribution components
+- descriptor: "pip-services-msgdistribution:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Passwords components
+- descriptor: "pip-services-passwords:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Roles components
+- descriptor: "pip-services-roles:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Sessions components
+- descriptor: "pip-services-sessions:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_USERS_SERVICE_HOST}}}"
+    port: {{PIP_USERS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### Content management components ###########
+
+# Blobs components
+- descriptor: "pip-services-blobs:client:s3:default:*"
+  connection:
+    arn: "{{{AWS_BLOBS_ARN}}}"
+  credential:
+    access_id: "{{{AWS_ACCESS_ID}}}"
+    access_key: "{{{AWS_ACCESS_KEY}}}"
+
+# Attachments components
+- descriptor: "pip-services-attachments:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Image Sets components
+- descriptor: "pip-services-imagesets:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Applications components
+- descriptor: "pip-services-applications:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Tips components
+- descriptor: "pip-services-tips:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Guides components
+- descriptor: "pip-services-guides:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Help components
+- descriptor: "pip-services-help:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Dashboards components
+- descriptor: "pip-services-dashboards:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Message templates components
+- descriptor: "pip-services-msgtemplates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_CONTENT_SERVICE_HOST}}}"
+    port: {{PIP_CONTENT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### Product support components ###########
+
+# Announcements components
+- descriptor: "pip-services-announcements:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_SUPPORT_SERVICE_HOST}}}"
+    port: {{PIP_SUPPORT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Feedbacks components
+- descriptor: "pip-services-feedbacks:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_SUPPORT_SERVICE_HOST}}}"
+    port: {{PIP_SUPPORT_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### eCommerce components ###########
+
+# Credit cards components
+- descriptor: "pip-services-creditcards:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{PIP_ECOMMERCE_SERVICE_HOST}}}"
+    port: {{PIP_ECOMMERCE_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### Positron root components ###########
+
+# Clusters components
+- descriptor: "pip-services-clusters:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### Positron configuration components ###########
+
+# Organizations components
+- descriptor: "pip-services-organizations:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Agreements components
+- descriptor: "iqs-services-agreements:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Locations components
+- descriptor: "iqs-services-locations:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Object groups components
+- descriptor: "iqs-services-objectgroups:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Control objects components
+- descriptor: "iqs-services-controlobjects:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# # Data profiles components
+- descriptor: "iqs-services-dataprofiles:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# # Device profiles components
+- descriptor: "iqs-services-deviceprofiles:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# # Device configs components
+- descriptor: "iqs-services-deviceconfigs:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Devices components
+- descriptor: "iqs-services-devices:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Event templates components
+- descriptor: "iqs-services-eventtemplates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Resolutions components
+- descriptor: "iqs-services-resolutions:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Gateways components
+- descriptor: "iqs-services-gateways:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Zones components
+- descriptor: "iqs-services-zones:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Beacons components
+- descriptor: "pip-services-beacons:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Rules components
+- descriptor: "iqs-services-eventrules:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Shifts components
+- descriptor: "iqs-services-shifts:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Emergency plans components
+- descriptor: "iqs-services-emergencyplans:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Invitations components
+- descriptor: "pip-services-invitations:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Roles components
+- descriptor: "pip-services-orgroles:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+########### Positron realtime components ###########
+
+# Current object state components
+- descriptor: "iqs-services-currobjectstates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Current device state components
+- descriptor: "iqs-services-currdevicestates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Incident tracking components
+- descriptor: "iqs-services-incidents:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Rosters components
+- descriptor: "iqs-services-rosters:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Signals components
+- descriptor: "iqs-services-signals:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Corrections components
+- descriptor: "iqs-services-corrections:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Event generation components
+- descriptor: "iqs-services-eventgeneration:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Route analysis components
+- descriptor: "pip-services-routeanalysis:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# State updates components
+- descriptor: "iqs-services-stateupdates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# REST gateway components
+- descriptor: "iqs-services-restgateway:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# MQTT default connector
+- descriptor: "iqs-services-mqttgateway:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# # Teltonika default connector
+# - descriptor: "iqs-services-teltonikagateway:connector:default:default:1.0"
+#   connection:
+#     protocol: udp
+#     host: "0.0.0.0"
+#     port: 4030
+
+# # Default controller
+# - descriptor: "iqs-services-teltonikagateway:controller:default:default:1.0"
+
+########### Positron historical components ###########
+
+# Operational events components
+- descriptor: "iqs-services-opevents:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Object data components
+- descriptor: "pip-services-transducerdata:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Object positions components
+- descriptor: "pip-services-positions:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Object states components
+- descriptor: "iqs-services-objectstates:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Object routes components
+- descriptor: "pip-services-routes:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+# Attendance components
+- descriptor: "iqs-services-attendance:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+################ System tools ##############
+
+# Cloudwatch components
+- descriptor: "iqs-services-cloudwatch:client:http:default:*"
+  connection:
+    protocol: "http"
+    host: "{{{IQS_COMPONENTS_SERVICE_HOST}}}"
+    port: {{IQS_COMPONENTS_SERVICE_PORT}}
+  options:
+    connect_timeout: 10000
+    timeout: 10000
+    retries: 3
+
+################ REST API Routes ##############
+
+# Main facade service
+- descriptor: "pip-services:facade-service:default:default:*"
+  root_path: ""
+  connection:
+    protocol: "http"
+    host: "0.0.0.0"
+    port: 8080
+  options:
+    debug: true
+    maintenance_enabled: false
+    max_req_size: "1mb"
+
+# Common HTTP endpoint
+# - descriptor: "pip-services:endpoint:http:default:1.0"
+#   connection:
+#     protocol: "http"
+#     host: "0.0.0.0"
+#     port: 8081
+
+# # Heartbeat service
+# - descriptor: "pip-services:heartbeat-service:http:default:1.0"
+
+# # Status service
+# - descriptor: "pip-services:status-service:http:default:1.0"
+
+# Prometheus metrics service
+# - descriptor: "pip-services:metrics-service:prometheus:default:1.0"
+
+# /api/v1 operations and service
+- descriptor: "pip-services:facade-operations:about:default:*"
+
+- descriptor: "pip-facade-infrastructure:operations:logging:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:counters:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:eventlog:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:settings:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:statistics:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:blobs:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:email:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:sms:default:1.0"
+
+- descriptor: "pip-facade-users:operations:accounts:default:1.0"
+- descriptor: "pip-facade-users:operations:activities:default:1.0"
+- descriptor: "pip-facade-users:operations:passwords:default:1.0"
+- descriptor: "pip-facade-users:operations:roles:default:1.0"
+- descriptor: "pip-facade-users:operations:email-settings:default:1.0"
+- descriptor: "pip-facade-users:operations:sms-settings:default:1.0"
+
+- descriptor: "pip-facade-content:operations:tips:default:1.0"
+- descriptor: "pip-facade-content:operations:guides:default:1.0"
+- descriptor: "pip-facade-content:operations:help:default:1.0"
+- descriptor: "pip-facade-content:operations:imagesets:default:1.0"
+- descriptor: "pip-facade-content:operations:dashboards:default:1.0"
+- descriptor: "pip-facade-content:operations:msgtemplates:default:1.0"
+
+- descriptor: "pip-facade-support:operations:announcements:default:1.0"
+- descriptor: "pip-facade-support:operations:feedbacks:default:1.0"
+
+- descriptor: "pip-facade-ecommerce:operations:creditcards:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:clusters:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:sessions:default:1.0"
+- descriptor: "iqs-services-facade:operations:organizations:default:1.0"
+- descriptor: "iqs-services-facade:operations:agreements:default:1.0"
+- descriptor: "iqs-services-facade:operations:locations:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-groups:default:1.0"
+- descriptor: "iqs-services-facade:operations:control-objects:default:1.0"
+- descriptor: "iqs-services-facade:operations:data-profiles:default:1.0"
+- descriptor: "iqs-services-facade:operations:device-profiles:default:1.0"
+- descriptor: "iqs-services-facade:operations:device-configs:default:1.0"
+- descriptor: "iqs-services-facade:operations:devices:default:1.0"
+- descriptor: "iqs-services-facade:operations:event-templates:default:1.0"
+- descriptor: "iqs-services-facade:operations:resolutions:default:1.0"
+- descriptor: "iqs-services-facade:operations:gateways:default:1.0"
+- descriptor: "iqs-services-facade:operations:zones:default:1.0"
+- descriptor: "iqs-services-facade:operations:beacons:default:1.0"
+- descriptor: "iqs-services-facade:operations:event-rules:default:1.0"
+- descriptor: "iqs-services-facade:operations:shifts:default:1.0"
+- descriptor: "iqs-services-facade:operations:emergency-plans:default:1.0"
+- descriptor: "iqs-services-facade:operations:invitations:default:1.0"
+- descriptor: "iqs-services-facade:operations:roles:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:curr-object-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:curr-device-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:incidents:default:1.0"
+- descriptor: "iqs-services-facade:operations:rosters:default:1.0"
+- descriptor: "iqs-services-facade:operations:signals:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:operational-events:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-data:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-positions:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-routes:default:1.0"
+- descriptor: "iqs-services-facade:operations:attendance:default:1.0"
+- descriptor: "iqs-services-facade:operations:corrections:default:1.0"
+- descriptor: "iqs-services-facade:operations:state-updates:default:1.0"
+- descriptor: "iqs-services-facade:operations:rest-gateway:default:1.0"
+- descriptor: "iqs-services-facade:operations:route-analysis:default:1.0"
+- descriptor: "iqs-services-facade:operations:organization-statistics:default:1.0"
+
+- descriptor: "iqs-services-facade:service:facade:default:1.0"

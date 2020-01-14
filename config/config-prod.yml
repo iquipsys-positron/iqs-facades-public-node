@@ -1,0 +1,658 @@
+---
+# Container info
+- descriptor: "pip-services-container:container-info:default:default:*"
+  name: "iqs-prod"
+  description: "Client facade for iQuipsys Positron (prod)"
+
+# Console logger
+- descriptor: "pip-services-commons:logger:console:default:*"
+  level: trace
+
+# Service logger
+#- descriptor: "pip-services-logging:logger:direct:default:*"
+#  level: trace
+
+# Log counters
+#- descriptor: "pip-services-commons:counters:log:default:*"
+
+# Service counters
+#- descriptor: "pip-services-counters:counters:direct:default:*"
+#  level: trace
+
+# Discovery service
+- descriptor: "pip-services-commons:discovery:memory:default:*"
+  mongodb: uri=mongodb://iqs:iquipsys01@iqs-tracker-us1-shard-00-00-cyfth.mongodb.net:27017,iqs-tracker-us1-shard-00-01-cyfth.mongodb.net:27017,iqs-tracker-us1-shard-00-02-cyfth.mongodb.net:27017/tracker?ssl=true&replicaSet=iqs-tracker-us1-shard-0&authSource=admin
+  #mongodb: uri=mongodb://localhost
+
+# Credential store
+- descriptor: "pip-services-commons:credential-store:memory:default:*"
+  mongodb: username=;password=
+
+############## Infrastructure components ##############
+
+# Logging components
+- descriptor: "pip-services-logging:persistence:memory:default:*"
+- descriptor: "pip-services-logging:controller:default:default:*"
+- descriptor: "pip-services-logging:client:direct:default:*"
+
+# Logging counters
+- descriptor: "pip-services-counters:persistence:memory:default:*"
+- descriptor: "pip-services-counters:controller:default:default:*"
+- descriptor: "pip-services-counters:client:direct:default:*"
+
+# Event Log components
+- descriptor: "pip-services-eventlog:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-eventlog:controller:default:default:*"
+- descriptor: "pip-services-eventlog:client:direct:default:*"
+
+# Statistics components
+- descriptor: "pip-services-statistics:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-statistics:controller:default:default:*"
+- descriptor: "pip-services-statistics:client:direct:default:*"
+- descriptor: "iqs-services-statistics:client:direct:default:*"
+
+# Settings components
+- descriptor: "pip-services-settings:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-settings:controller:default:default:*"
+- descriptor: "pip-services-settings:client:direct:default:*"
+
+# Facets components
+- descriptor: "pip-services-facets:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-facets:controller:default:default:*"
+- descriptor: "pip-services-facets:client:direct:default:*"
+
+############# User management components ##############
+
+# Activities components
+- descriptor: "pip-services-activities:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-activities:controller:default:default:*"
+- descriptor: "pip-services-activities:client:direct:default:*"
+
+# Accounts components
+- descriptor: "pip-services-accounts:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-accounts:controller:default:default:*"
+- descriptor: "pip-services-accounts:client:direct:default:*"
+
+# Message templates components
+- descriptor: "pip-services-msgtemplates:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-msgtemplates:controller:default:default:*"
+- descriptor: "pip-services-msgtemplates:client:direct:default:*"
+
+# Email components
+- descriptor: "pip-services-email:controller:default:default:*"
+  connection:
+    service: 'Gmail'
+    host: 'host233.hostmonster.com'
+    secure_connection: true
+    port: 465
+  credential:
+    username: 'info@iquipsys.com'
+    password: 'iQuipsys#01'
+  message:
+    from: 'info@iquipsys.com'
+  parameters:
+    client_name: "iQuipsys Positron"
+    client_url: "http://www.positron.iquipsys.net"
+    server_url: "http://positron-svc.iquipsys.net:8080"
+    signature: "Yours iQuipsys support"
+- descriptor: "pip-services-email:client:direct:default:*"
+
+# Sms components
+- descriptor: "pip-services-sms:controller:default:default:*"
+  credential:
+    access_id: AKIAILSKRJCVVHIO6HKA
+    access_key: xipiil4G0+rI5rJ89M8OytqgO4IO02VjP+S/B1hg
+  message:
+    from: 'iquipsys'
+  parameters:
+    client_name: "iQuipsys Positron"
+    client_url: "http://www.positron.iquipsys.net"
+    server_url: "http://positron-svc.iquipsys.net:8080"
+    signature: "Yours iQuipsys support"
+- descriptor: "pip-services-sms:client:direct:default:*"
+
+# Email settings components
+- descriptor: "pip-services-emailsettings:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-emailsettings:controller:default:default:*"
+  options:
+    magic_code: "magic"
+  message_templates:
+    verify_email:
+      template: verify_email
+- descriptor: "pip-services-emailsettings:client:direct:default:*"
+
+# Sms settings components
+- descriptor: "pip-services-smssettings:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-smssettings:controller:default:default:*"
+  options:
+    magic_code: "magic"
+  message_templates:
+    verify_phone:
+      template: verify_phone
+- descriptor: "pip-services-smssettings:client:direct:default:*"
+
+# Message distribution components
+- descriptor: "pip-services-msgdistribution:controller:default:default:*"
+- descriptor: "pip-services-msgdistribution:client:direct:default:*"
+
+# Passwords components
+- descriptor: "pip-services-passwords:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-passwords:controller:default:default:*"
+  options:
+    magic_code: "magic"
+  message_templates:
+    recover_password:
+      template: recover_password
+    account_locked:
+      template: account_locked
+    password_changed:
+      template: password_changed
+- descriptor: "pip-services-passwords:client:direct:default:*"
+
+# Roles components
+- descriptor: "pip-services-roles:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-roles:controller:default:default:*"
+- descriptor: "pip-services-roles:client:direct:default:*"
+
+# Session components
+- descriptor: "pip-services-sessions:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-sessions:controller:default:default:*"
+- descriptor: "pip-services-sessions:client:direct:default:*"
+
+########### Content management components ###########
+
+# Blobs components
+- descriptor: "pip-services-blobs:client:s3:default:*"
+  connection:
+    arn: arn:aws:s3:us-east-1::iqs-positron-blobs-prod
+  credential:
+    access_id: AKIAILSKRJCVVHIO6HKA
+    access_key: xipiil4G0+rI5rJ89M8OytqgO4IO02VjP+S/B1hg
+
+# Attachments components
+- descriptor: "pip-services-attachments:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-attachments:controller:default:default:*"
+- descriptor: "pip-services-attachments:client:direct:default:*"
+
+# Image Sets components
+- descriptor: "pip-services-imagesets:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-imagesets:controller:default:default:*"
+- descriptor: "pip-services-imagesets:client:direct:default:*"
+
+# Applications components
+- descriptor: "pip-services-applications:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-applications:controller:default:default:*"
+- descriptor: "pip-services-applications:client:direct:default:*"
+
+# Tips components
+- descriptor: "pip-services-tips:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-tips:controller:default:default:*"
+- descriptor: "pip-services-tips:client:direct:default:*"
+
+# Guides components
+- descriptor: "pip-services-guides:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-guides:controller:default:default:*"
+- descriptor: "pip-services-guides:client:direct:default:*"
+
+# Help components
+- descriptor: "pip-services-help:persistence-topics:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-help:persistence-articles:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-help:controller:default:default:*"
+- descriptor: "pip-services-help:client:direct:default:*"
+
+# Dashboards components
+- descriptor: "pip-services-dashboards:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-dashboards:controller:default:default:*"
+- descriptor: "pip-services-dashboards:client:direct:default:*"
+
+########### Product support components ###########
+
+# Announcements components
+- descriptor: "pip-services-announcements:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-announcements:controller:default:default:*"
+- descriptor: "pip-services-announcements:client:direct:default:*"
+
+# Feedbacks components
+- descriptor: "pip-services-feedbacks:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-feedbacks:controller:default:default:*"
+- descriptor: "pip-services-feedbacks:client:direct:default:*"
+
+########### eCommerce components ###########
+
+# Credit cards components
+- descriptor: "pip-services-creditcards:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-creditcards:controller:default:default:*"
+- descriptor: "pip-services-creditcards:client:direct:default:*"
+
+########### Positron root components ###########
+
+# Clusters components
+- descriptor: "pip-services-clusters:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-clusters:controller:default:default:*"
+- descriptor: "pip-services-clusters:client:direct:default:*"
+
+########### Positron configuration components ###########
+
+# Organizations components
+- descriptor: "pip-services-organizations:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-organizations:controller:default:default:*"
+- descriptor: "pip-services-organizations:client:direct:default:*"
+
+# Agreements components
+- descriptor: "iqs-services-agreements:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-agreements:controller:default:default:*"
+- descriptor: "iqs-services-agreements:client:direct:default:*"
+
+# Locations components
+- descriptor: "iqs-services-locations:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-locations:controller:default:default:*"
+- descriptor: "iqs-services-locations:client:direct:default:*"
+
+# Object groups components
+- descriptor: "iqs-services-objectgroups:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-objectgroups:controller:default:default:*"
+- descriptor: "iqs-services-objectgroups:client:direct:default:*"
+
+# Control objects components
+- descriptor: "iqs-services-controlobjects:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-controlobjects:controller:default:default:*"
+- descriptor: "iqs-services-controlobjects:client:direct:default:*"
+
+# Data profiles components
+- descriptor: "iqs-services-dataprofiles:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-dataprofiles:controller:default:default:*"
+- descriptor: "iqs-services-dataprofiles:client:direct:default:*"
+
+# Device profiles components
+- descriptor: "iqs-services-deviceprofiles:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-deviceprofiles:controller:default:default:*"
+- descriptor: "iqs-services-deviceprofiles:client:direct:default:*"
+
+# Device configs components
+- descriptor: "iqs-services-deviceconfigs:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-deviceconfigs:controller:default:default:*"
+- descriptor: "iqs-services-deviceconfigs:client:direct:default:*"
+
+# Devices components
+- descriptor: "iqs-services-devices:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-devices:controller:default:default:*"
+  message_templates:
+    phone_connect_welcome:
+      template: phone_connect_welcome
+- descriptor: "iqs-services-devices:client:direct:default:*"
+
+# Event templates components
+- descriptor: "iqs-services-eventtemplates:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-eventtemplates:controller:default:default:*"
+- descriptor: "iqs-services-eventtemplates:client:direct:default:*"
+
+# Resolutions components
+- descriptor: "iqs-services-resolutions:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-resolutions:controller:default:default:*"
+- descriptor: "iqs-services-resolutions:client:direct:default:*"
+
+# Gateways components
+- descriptor: "iqs-services-gateways:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-gateways:controller:default:default:*"
+- descriptor: "iqs-services-gateways:client:direct:default:*"
+
+# Zones components
+- descriptor: "iqs-services-zones:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-zones:controller:default:default:*"
+- descriptor: "iqs-services-zones:client:direct:default:*"
+
+# Beacons components
+- descriptor: "pip-services-beacons:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-beacons:controller:default:default:*"
+- descriptor: "pip-services-beacons:client:direct:default:*"
+
+# Rules components
+- descriptor: "iqs-services-eventrules:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-eventrules:controller:default:default:*"
+- descriptor: "iqs-services-eventrules:client:direct:default:*"
+
+# Shifts components
+- descriptor: "iqs-services-shifts:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-shifts:controller:default:default:*"
+- descriptor: "iqs-services-shifts:client:direct:default:*"
+
+# Emergency plans components
+- descriptor: "iqs-services-emergencyplans:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-emergencyplans:controller:default:default:*"
+- descriptor: "iqs-services-emergencyplans:client:direct:default:*"
+
+# Invitations components
+- descriptor: "pip-services-invitations:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-invitations:controller:default:default:*"
+  message_templates:
+    invitation:
+      template: invitation
+    access_request:
+      template: access_request
+    access_approved:
+      template: access_approved
+    access_denied:
+      template: access_denied
+    organization_invitation:
+      template: organization_invitation
+- descriptor: "pip-services-invitations:client:direct:default:*"
+
+# Roles components
+- descriptor: "pip-services-orgroles:controller:default:default:*"
+  message_templates:
+    organization_grant_access:
+      template: organization_grant_access
+- descriptor: "pip-services-orgroles:client:direct:default:*"
+
+########### Positron realtime components ###########
+
+# Current object state components
+- descriptor: "iqs-services-currobjectstates:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-currobjectstates:controller:default:default:*"
+- descriptor: "iqs-services-currobjectstates:client:direct:default:*"
+
+# Current device state components
+- descriptor: "iqs-services-currdevicestates:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-currdevicestates:controller:default:default:*"
+- descriptor: "iqs-services-currdevicestates:client:direct:default:*"
+
+# Incident tracking components
+- descriptor: "iqs-services-incidents:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-incidents:controller:default:default:*"
+- descriptor: "iqs-services-incidents:client:direct:default:*"
+
+# Rosters components
+- descriptor: "iqs-services-rosters:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-rosters:controller:default:default:*"
+- descriptor: "iqs-services-rosters:client:direct:default:*"
+
+# Signals components
+- descriptor: "iqs-services-signals:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-signals:controller:default:default:*"
+- descriptor: "iqs-services-signals:client:direct:default:*"
+
+# Corrections components
+- descriptor: "iqs-services-corrections:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-corrections:controller:default:default:*"
+- descriptor: "iqs-services-corrections:client:direct:default:*"
+
+# Event generation components
+- descriptor: "iqs-services-eventgeneration:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-eventgeneration:controller:default:default:*"
+  message_templates:
+    event:
+      template: event
+- descriptor: "iqs-services-eventgeneration:client:direct:default:*"
+
+# Route analysis components
+- descriptor: "pip-services-routeanalysis:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-routeanalysis:controller:default:default:*"
+- descriptor: "pip-services-routeanalysis:client:direct:default:*"
+
+# State updates components
+- descriptor: "iqs-services-stateupdates:controller:default:default:*"
+  options:
+    offline_check_interval: 300
+- descriptor: "iqs-services-stateupdates:client:direct:default:*"
+
+# REST gateway components
+- descriptor: "iqs-services-restgateway:controller:default:default:*"
+- descriptor: "iqs-services-restgateway:client:direct:default:*"
+
+# MQTT default connector
+- descriptor: "iqs-services-mqttgateway:connector:default:default:1.0"
+  connection:
+    protocol: mqtt
+    host: api.positron.iquipsys.net
+    port: 1883
+
+# Default controller
+- descriptor: "iqs-services-mqttgateway:controller:default:default:1.0"
+  options:
+    up_topic: +/up
+    down_topic: +/down
+
+- descriptor: "iqs-services-mqttgateway:client:direct:default:*"
+
+# Teltonika default connector
+- descriptor: "iqs-services-teltonikagateway:connector:default:default:1.0"
+  connection:
+    protocol: udp
+    host: "0.0.0.0"
+    port: 4030
+
+# Default controller
+- descriptor: "iqs-services-teltonikagateway:controller:default:default:1.0"
+
+########### Positron historical components ###########
+
+# Operational events components
+- descriptor: "iqs-services-opevents:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-opevents:controller:default:default:*"
+- descriptor: "iqs-services-opevents:client:direct:default:*"
+
+# Object data components
+- descriptor: "pip-services-transducerdata:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-transducerdata:controller:default:default:*"
+- descriptor: "pip-services-transducerdata:client:direct:default:*"
+
+# Object positions components
+- descriptor: "pip-services-positions:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-positions:controller:default:default:*"
+- descriptor: "pip-services-positions:client:direct:default:*"
+
+# Object states components
+- descriptor: "iqs-services-objectstates:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-objectstates:controller:default:default:*"
+- descriptor: "iqs-services-objectstates:client:direct:default:*"
+
+# Object routes components
+- descriptor: "pip-services-routes:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "pip-services-routes:controller:default:default:*"
+- descriptor: "pip-services-routes:client:direct:default:*"
+
+# Attendance components
+- descriptor: "iqs-services-attendance:persistence:mongodb:default:*"
+  connection:
+    discovery_key: mongodb
+- descriptor: "iqs-services-attendance:controller:default:default:*"
+- descriptor: "iqs-services-attendance:client:direct:default:*"
+
+################ REST API Routes ##############
+
+# Main facade service
+- descriptor: "pip-services-facade:service:main:default:*"
+  root_path: ""
+  connection:
+    protocol: "http"
+    host: "0.0.0.0"
+    port: 8080
+  options:
+    debug: true
+    maintenance_enabled: false
+    max_req_size: "1mb"
+
+# /api/v1 operations and service
+- descriptor: "pip-services-facade:operations:about:default:*"
+
+- descriptor: "pip-facade-infrastructure:operations:logging:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:counters:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:eventlog:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:settings:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:statistics:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:blobs:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:email:default:1.0"
+- descriptor: "pip-facade-infrastructure:operations:sms:default:1.0"
+
+- descriptor: "pip-facade-users:operations:accounts:default:1.0"
+- descriptor: "pip-facade-users:operations:activities:default:1.0"
+- descriptor: "pip-facade-users:operations:passwords:default:1.0"
+- descriptor: "pip-facade-users:operations:roles:default:1.0"
+- descriptor: "pip-facade-users:operations:email-settings:default:1.0"
+- descriptor: "pip-facade-users:operations:sms-settings:default:1.0"
+
+- descriptor: "pip-facade-content:operations:applications:default:1.0"
+- descriptor: "pip-facade-content:operations:tips:default:1.0"
+- descriptor: "pip-facade-content:operations:guides:default:1.0"
+- descriptor: "pip-facade-content:operations:help:default:1.0"
+- descriptor: "pip-facade-content:operations:imagesets:default:1.0"
+- descriptor: "pip-facade-content:operations:dashboards:default:1.0"
+- descriptor: "pip-facade-content:operations:msgtemplates:default:1.0"
+
+- descriptor: "pip-facade-support:operations:announcements:default:1.0"
+- descriptor: "pip-facade-support:operations:feedbacks:default:1.0"
+
+- descriptor: "pip-facade-ecommerce:operations:creditcards:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:clusters:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:sessions:default:1.0"
+- descriptor: "iqs-services-facade:operations:organizations:default:1.0"
+- descriptor: "iqs-services-facade:operations:agreements:default:1.0"
+- descriptor: "iqs-services-facade:operations:locations:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-groups:default:1.0"
+- descriptor: "iqs-services-facade:operations:control-objects:default:1.0"
+- descriptor: "iqs-services-facade:operations:data-profiles:default:1.0"
+- descriptor: "iqs-services-facade:operations:device-profiles:default:1.0"
+- descriptor: "iqs-services-facade:operations:device-configs:default:1.0"
+- descriptor: "iqs-services-facade:operations:devices:default:1.0"
+- descriptor: "iqs-services-facade:operations:event-templates:default:1.0"
+- descriptor: "iqs-services-facade:operations:resolutions:default:1.0"
+- descriptor: "iqs-services-facade:operations:gateways:default:1.0"
+- descriptor: "iqs-services-facade:operations:zones:default:1.0"
+- descriptor: "iqs-services-facade:operations:beacons:default:1.0"
+- descriptor: "iqs-services-facade:operations:event-rules:default:1.0"
+- descriptor: "iqs-services-facade:operations:shifts:default:1.0"
+- descriptor: "iqs-services-facade:operations:emergency-plans:default:1.0"
+- descriptor: "iqs-services-facade:operations:invitations:default:1.0"
+- descriptor: "iqs-services-facade:operations:roles:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:curr-object-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:curr-device-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:incidents:default:1.0"
+- descriptor: "iqs-services-facade:operations:rosters:default:1.0"
+- descriptor: "iqs-services-facade:operations:signals:default:1.0"
+
+- descriptor: "iqs-services-facade:operations:operational-events:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-data:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-positions:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-states:default:1.0"
+- descriptor: "iqs-services-facade:operations:object-routes:default:1.0"
+- descriptor: "iqs-services-facade:operations:attendance:default:1.0"
+- descriptor: "iqs-services-facade:operations:corrections:default:1.0"
+- descriptor: "iqs-services-facade:operations:state-updates:default:1.0"
+- descriptor: "iqs-services-facade:operations:rest-gateway:default:1.0"
+- descriptor: "iqs-services-facade:operations:route-analysis:default:1.0"
+- descriptor: "iqs-services-facade:operations:organization-statistics:default:1.0"
+
+- descriptor: "iqs-services-facade:service:facade:default:1.0"

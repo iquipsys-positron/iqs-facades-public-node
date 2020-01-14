@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  test:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.test
+    image: ${IMAGE:-pipdevs/test}
+    command: ${TEST_CMD:-npm test}
+    depends_on:
+      - mongo
+      - memcached
+      - mosquitto
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MQTT_HOST=mosquitto
+      - MQTT_PORT=1883
+      - MEMCACHED_HOST=memcached
+      - MEMCACHED_PORT=11211
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+
+  mosquitto:
+    image: toke/mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"

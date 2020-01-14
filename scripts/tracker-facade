@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# Note runlevel 2345, 86 is the Start order and 85 is the Stop order
+#
+# chkconfig: 2345 86 85
+# description: Description of the Service
+#
+# Below is the source function library, leave it be
+. /etc/init.d/functions
+
+# result of whereis forever or whereis node
+export PATH=$PATH:/usr/local/bin  
+# result of whereis node_modules
+export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
+
+
+start(){  
+        forever start --uid iqs-facade-public --sourceDir=/home/ec2-user/iqs-facade-public-node -a bin/run.js
+}
+
+stop(){  
+        forever stop iqs-facade-public
+}
+
+restart(){  
+        forever restart iqs-facade-public
+}
+
+case "$1" in  
+        start)
+                echo "Start service iqs-facade-public"
+                start
+                ;;
+        stop)
+                echo "Stop service iqs-facade-public"
+                stop
+                ;;
+        restart)
+                echo "Restart service iqs-facade-public"
+                restart
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+                ;;
+esac 

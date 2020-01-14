@@ -1,0 +1,147 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: iqs-positron
+  name: iqs-facade-node-deploy
+spec:
+  replicas: 1
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: iqs-facade-node
+    spec:
+      containers:
+      - name: iqs-facade-node-pod
+        image: registry.gitlab.com/iqs-services/iqs-facade-public-node:1.0.0-1-rc
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ENV_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: env_name
+        - name: VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: version
+        - name: MONGO_SERVICE_URI
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: mongo_service_uri
+        - name: EMAIL_SERVICE
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: email_service
+        - name: EMAIL_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: email_service_host
+        - name: EMAIL_SSL
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: email_ssl
+        - name: EMAIL_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: email_service_port
+        - name: EMAIL_USER
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: email_user
+        - name: EMAIL_PASS
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: email_password
+        - name: EMAIL_FROM
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: email_from
+        - name: CLIENT_URL
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: client_url
+        - name: SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: server_url
+        - name: AWS_REGION
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_region
+        - name: AWS_ACCESS_ID
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_access_id
+        - name: AWS_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_access_key
+        - name: MAGIC_CODE
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: magic_code
+        - name: AWS_BLOBS_ARN
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: aws_blobs_arn
+        - name: DEMO_ORG_ID
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: demo_org_id
+        - name: DEMO_ORG_RU_ID
+          valueFrom:
+            configMapKeyRef:
+              name: iqs-positron-config
+              key: demo_organization_ru_id
+        - name: PAYPAL_ACCESS_ID
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: paypal_access_id
+        - name: PAYPAL_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: iqs-positron-secret
+              key: paypal_access_key
+      imagePullSecrets:
+      - name: gitlab-docker-registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: iqs-positron
+  name: iqs-facade
+  labels: 
+    app: iqs-facade-node
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    nodePort: 30018
+    protocol: TCP
+  selector:
+    app: iqs-facade-node
