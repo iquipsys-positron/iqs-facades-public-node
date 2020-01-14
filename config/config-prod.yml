@@ -16,7 +16,7 @@
 #- descriptor: "pip-services-commons:counters:log:default:*"
 
 # Service counters
-#- descriptor: "pip-services-counters:counters:direct:default:*"
+#- descriptor: "pip-services-perfmon:counters:direct:default:*"
 #  level: trace
 
 # Discovery service
@@ -36,9 +36,9 @@
 - descriptor: "pip-services-logging:client:direct:default:*"
 
 # Logging counters
-- descriptor: "pip-services-counters:persistence:memory:default:*"
-- descriptor: "pip-services-counters:controller:default:default:*"
-- descriptor: "pip-services-counters:client:direct:default:*"
+- descriptor: "pip-services-perfmon:persistence:memory:default:*"
+- descriptor: "pip-services-perfmon:controller:default:default:*"
+- descriptor: "pip-services-perfmon:client:direct:default:*"
 
 # Event Log components
 - descriptor: "pip-services-eventlog:persistence:mongodb:default:*"
@@ -571,7 +571,7 @@
 ################ REST API Routes ##############
 
 # Main facade service
-- descriptor: "pip-services-facade:service:main:default:*"
+- descriptor: "pip-services:facade-service:default:default:*"
   root_path: ""
   connection:
     protocol: "http"
