@@ -76,11 +76,11 @@
 - descriptor: "pip-services-settings:client:direct:default:*"
 
 # Facets components
-- descriptor: "pip-services-facets:persistence:mongodb:default:*"
-  connection:
-    discovery_key: mongodb
-- descriptor: "pip-services-facets:controller:default:default:*"
-- descriptor: "pip-services-facets:client:direct:default:*"
+# - descriptor: "pip-services-facets:persistence:mongodb:default:*"
+#   connection:
+#     discovery_key: mongodb
+# - descriptor: "pip-services-facets:controller:default:default:*"
+# - descriptor: "pip-services-facets:client:direct:default:*"
 
 ############# User management components ##############
 
