@@ -157,7 +157,8 @@
     "@types/chai": "*",
     "mocha": "*",
     "chai": "*",
-    "restify": "4.3.0"
+    "restify": "4.3.0",
+    "aws-sdk": "*"
   },
   "bugs": {
     "url": "https://github.com/iquipsys-positron/iqs-facade-public-node/issues"
